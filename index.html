@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contas — gerenciador de Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========== LOGIN / CADASTRO ========== -->
+  <main id="view-auth" class="auth" hidden>
+    <section class="auth__intro">
+      <h1 class="brand">Contas</h1>
+      <p class="auth__pitch">Conecte seus perfis do Instagram, acompanhe tudo em um lugar só e agende sem abrir cinco abas.</p>
+      <p class="auth__free">Grátis até 5 contas conectadas.</p>
+    </section>
+
+    <section class="auth__panel">
+      <div class="tabs" role="tablist">
+        <button class="tabs__btn is-active" role="tab" data-mode="login" aria-selected="true">Entrar</button>
+        <button class="tabs__btn" role="tab" data-mode="signup" aria-selected="false">Criar conta</button>
+      </div>
+
+      <div id="auth-form" class="form" role="group" aria-label="Acesso">
+        <label class="field">
+          <span>E-mail</span>
+          <input id="auth-email" type="email" autocomplete="email" placeholder="voce@empresa.com">
+        </label>
+        <label class="field">
+          <span>Senha</span>
+          <input id="auth-password" type="password" autocomplete="current-password" placeholder="Mínimo de 8 caracteres">
+        </label>
+        <p id="auth-error" class="msg msg--error" role="alert" hidden></p>
+        <button id="auth-submit" class="btn btn--primary" type="button">Entrar</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== DASHBOARD ========== -->
+  <div id="view-app" class="app" hidden>
+    <aside class="side">
+      <h1 class="brand">Contas</h1>
+      <nav class="side__nav" aria-label="Principal">
+        <a class="side__link is-active" href="#contas">Contas</a>
+        <a class="side__link" href="#agenda">Agenda</a>
+        <a class="side__link" href="#metricas">Métricas</a>
+        <a class="side__link" href="#plano">Plano</a>
+      </nav>
+      <div class="side__foot">
+        <span id="user-email" class="side__email"></span>
+        <button id="btn-logout" class="btn btn--ghost" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="main" id="contas">
+      <header class="main__head">
+        <div>
+          <h2>Suas contas</h2>
+          <p class="muted">Perfis do Instagram conectados pela API oficial.</p>
+        </div>
+        <button id="btn-add" class="btn btn--primary" type="button">Conectar conta</button>
+      </header>
+
+      <!-- Medidor: o elemento central da tela -->
+      <section class="meter" aria-labelledby="meter-title">
+        <div class="meter__top">
+          <h3 id="meter-title">Plano <span id="plan-name">Grátis</span></h3>
+          <p id="meter-text" class="meter__text">0 de 5 contas em uso</p>
+        </div>
+        <ol id="meter-slots" class="slots" aria-hidden="true"></ol>
+        <button id="btn-upgrade" class="btn btn--accent" type="button">Ver planos</button>
+      </section>
+
+      <section aria-labelledby="list-title">
+        <h3 id="list-title" class="visually-hidden">Lista de contas</h3>
+        <ul id="accounts" class="accounts"></ul>
+        <div id="empty" class="empty" hidden>
+          <p><strong>Nenhuma conta conectada.</strong></p>
+          <p class="muted">Conecte o primeiro perfil para começar a agendar posts e ver métricas.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========== MODAL: CONECTAR CONTA ========== -->
+  <dialog id="dlg-add" class="dlg">
+    <div class="form">
+      <h3>Conectar conta</h3>
+      <p class="muted" id="add-help">Você será levado ao Instagram para autorizar o acesso. Nós nunca vemos sua senha.</p>
+      <label class="field" id="add-field" hidden>
+        <span>Usuário (modo de desenvolvimento)</span>
+        <input id="add-username" type="text" placeholder="@nomedaconta" autocomplete="off">
+      </label>
+      <p id="add-error" class="msg msg--error" role="alert" hidden></p>
+      <div class="dlg__actions">
+        <button id="add-cancel" class="btn btn--ghost" type="button">Cancelar</button>
+        <button id="add-confirm" class="btn btn--primary" type="button">Continuar no Instagram</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ========== MODAL: PLANOS ========== -->
+  <dialog id="dlg-plans" class="dlg dlg--wide">
+    <div class="form">
+      <h3 id="plans-title">Escolha um plano</h3>
+      <p id="plans-sub" class="muted">Você usou todas as contas do plano grátis.</p>
+      <div id="plans-list" class="plans"></div>
+      <div class="dlg__actions">
+        <button id="plans-close" class="btn btn--ghost" type="button">Agora não</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
